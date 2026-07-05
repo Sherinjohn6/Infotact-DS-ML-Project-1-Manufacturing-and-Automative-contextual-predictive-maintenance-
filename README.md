@@ -1,237 +1,174 @@
-# AI4I Predictive Maintenance using Machine Learning
+# 🔧 Predictive Maintenance System (AI4I 2020 Dataset)
 
-## Project Overview
+## 📌 Overview
 
-This project develops a machine learning model to predict machine failures using the **AI4I 2020 Predictive Maintenance Dataset**. The objective is to identify potential failures before they occur, enabling preventive maintenance, reducing downtime, and improving operational efficiency.
+This project presents an end-to-end **Machine Learning solution for Predictive Maintenance** using the **AI4I 2020 dataset**.  
+The system predicts **machine failure events** based on industrial sensor data to help reduce downtime, improve safety, and optimize maintenance cost.
 
-The project follows a complete end-to-end machine learning workflow, including data preprocessing, exploratory data analysis, feature engineering, model comparison, hyperparameter tuning, explainable AI (SHAP), and model deployment preparation.
-
----
-
-## Objectives
-
-* Predict machine failure accurately.
-* Compare multiple machine learning models.
-* Optimize model performance through hyperparameter tuning.
-* Improve classification using threshold optimization.
-* Validate model robustness with cross-validation.
-* Explain predictions using SHAP.
-* Save the trained model for deployment.
+The solution includes:
+- Data preprocessing & feature engineering  
+- Handling class imbalance using SMOTE  
+- Model training with LightGBM  
+- Hyperparameter optimization  
+- Robustness validation  
+- Model explainability using SHAP  
+- Production-ready deployment using Streamlit  
 
 ---
 
-## Dataset
+## 🎯 Objective
 
-**Dataset:** AI4I 2020 Predictive Maintenance Dataset
+To build a reliable classification model that predicts:
 
-### Features
-
-* Type
-* Air Temperature (K)
-* Process Temperature (K)
-* Rotational Speed (rpm)
-* Torque (Nm)
-* Tool Wear (min)
-* Engineered Features (created during feature engineering)
-
-### Target Variable
-
-* Machine Failure
-
-  * 0 = No Failure
-  * 1 = Failure
+> **Machine Failure (Yes / No)** based on real-time sensor readings.
 
 ---
 
-## Project Workflow
+## 📊 Dataset Description
 
-1. Data Collection
-2. Data Preprocessing
-3. Exploratory Data Analysis (EDA)
-4. Feature Engineering
-5. Model Training
-6. Model Comparison
-7. Hyperparameter Tuning
-8. Threshold Optimization
-9. Robust Cross Validation
-10. Final Model Evaluation
-11. SHAP Explainability
-12. Save Final Model
-13. Deployment Preparation
+**Source:** UCI Machine Learning Repository  
+**Type:** Industrial predictive maintenance dataset  
+**Samples:** 10,000 records  
+**Task:** Binary Classification  
 
----
+### Features:
+- Air Temperature (K)
+- Process Temperature (K)
+- Rotational Speed (rpm)
+- Torque (Nm)
+- Tool Wear (min)
+- Product Type (L / M / H)
 
-## Technologies Used
-
-* Python
-* Pandas
-* NumPy
-* Matplotlib
-* Scikit-learn
-* LightGBM
-* SHAP
-* Joblib
+### Target:
+- `Machine failure` → 0 (No Failure), 1 (Failure)
 
 ---
 
-## Machine Learning Models Evaluated
+## ⚙️ Methodology
 
-* Logistic Regression
-* Random Forest
-* XGBoost
-* LightGBM
-
-The final selected model is the tuned **LightGBM** classifier because it achieved the best overall performance.
+### 1. Data Preprocessing
+- Encoding categorical variable (`Product Type`)
+- Feature scaling using Standard/Robust Scaler
+- Train-test split with stratification
 
 ---
 
-## Hyperparameter Tuning
+### 2. Handling Class Imbalance (SMOTE)
 
-Hyperparameter tuning was performed using **GridSearchCV** to identify the optimal parameter combination for the LightGBM model.
+The dataset is highly imbalanced with rare failure cases.
 
-The tuned model improved overall prediction accuracy and generalization performance.
-
----
-
-## Threshold Optimization
-
-Instead of using the default classification threshold (0.5), threshold optimization was performed to improve the balance between precision and recall.
-
-This resulted in better failure detection performance.
+SMOTE (Synthetic Minority Oversampling Technique) was applied to:
+- Balance class distribution  
+- Improve recall for failure detection  
+- Reduce model bias toward majority class  
 
 ---
 
-## Robust Cross Validation
-
-K-Fold Cross Validation was used to evaluate the stability and robustness of the model.
-
-Metrics evaluated include:
-
-* Accuracy
-* Precision
-* Recall
-* F1-Score
-
-The model demonstrated consistent performance across all folds.
+### 3. Feature Engineering
+- Temperature difference features
+- Operational stress indicators
+- Tool wear intensity mapping
+- Feature selection to remove redundancy
 
 ---
 
-## Model Evaluation
+### 4. Model Development
+Primary model:
+- **LightGBM Classifier**
 
-Evaluation metrics include:
-
-* Accuracy
-* Precision
-* Recall
-* F1-Score
-* ROC-AUC Score
-* Confusion Matrix
-* Classification Report
+Baseline comparisons:
+- Logistic Regression  
+- Random Forest  
+- XGBoost  
 
 ---
 
-## Explainable AI (SHAP)
+### 5. Hyperparameter Tuning
+Optimized using GridSearchCV / RandomizedSearchCV.
 
-SHAP (SHapley Additive exPlanations) was used to explain the predictions made by the LightGBM model.
-
-Visualizations include:
-
-* SHAP Feature Importance
-* SHAP Summary (Beeswarm) Plot
-
-These plots highlight the most influential features affecting machine failure predictions.
-
----
-
-## Saved Model Files
-
-The following files are included for deployment:
-
-* `final_lightgbm_model.pkl`
-* `label_encoder.pkl`
-* `feature_names.pkl`
-
-These files can be loaded directly into a deployment application.
+Key parameters tuned:
+- num_leaves  
+- max_depth  
+- learning_rate  
+- n_estimators  
+- subsample  
+- min_child_samples  
 
 ---
 
-## Project Structure
+### 6. Robustness Evaluation
+Model stability validated using:
+- K-Fold Cross Validation  
+- Multiple random seed testing  
+- Noise injection experiments  
+- Train-test split variations  
 
-```text
-AI4I-Predictive-Maintenance/
+Result: Stable performance with low variance across runs.
+
+---
+
+### 7. Model Evaluation Metrics
+- Accuracy  
+- Precision  
+- Recall (critical metric)  
+- F1-Score  
+- ROC-AUC  
+- Confusion Matrix  
+
+---
+
+### 8. Model Explainability (SHAP)
+SHAP analysis was used to interpret predictions.
+
+Key insights:
+- Torque is the strongest failure indicator  
+- Tool wear significantly influences failure risk  
+- Temperature imbalance contributes to system stress  
+- Rotational speed affects operational stability  
+
+---
+
+## 🚀 Deployment
+
+The model is deployed as an interactive web application using **Streamlit**.
+
+### Deployment Features:
+- User input for sensor values  
+- Real-time prediction  
+- Failure probability output  
+- Clean and interactive UI  
+
+### Deployment Stack:
+- Streamlit  
+- Pickle (Model Serialization)  
+- Scikit-learn Pipeline  
+
+### Deployment Options:
+- Streamlit Cloud  
+- Render / Railway  
+- AWS EC2 / Azure App Service  
+- Docker-based deployment  
+
+---
+
+## 🧱 Project Structure
+
+```bash
+project/
 │
-├── dataset/
-├── notebooks/
-├── models/
-│   ├── final_lightgbm_model.pkl
-│   ├── label_encoder.pkl
-│   └── feature_names.pkl
-│
-├── save_model.py
-├── shap_analysis.py
 ├── app.py
-├── requirements.txt
-├── README.md
-└── images/
-```
-
----
-
-## Results
-
-* High prediction accuracy using the tuned LightGBM model.
-* Reliable performance validated through cross-validation.
-* Improved classification using threshold optimization.
-* Model predictions explained using SHAP for transparency and interpretability.
-
----
-
-## Future Improvements
-
-* Deploy the model using Streamlit.
-* Integrate real-time sensor data.
-* Monitor deployed model performance.
-* Explore deep learning approaches.
-* Implement cloud deployment.
-
----
-
-## Installation
-
-Clone the repository:
-
-```bash
-git clone https://github.com/Sherinjohn6/Infotact-DS-ML-Project-1.git
-```
-
-Navigate to the project folder:
-
-```bash
-cd Infotact-DS-ML-Project-1
-```
-
-Install the required packages:
-
-```bash
-pip install -r requirements.txt
-```
-
-Run the application:
-
-```bash
-streamlit run app.py
-```
-
----
-
-## Author
-
-**Sherin John**
-
-Machine Learning | Data Science | Predictive Maintenance
-
----
-
-## License
-
-This project is developed for educational and portfolio purposes.
+├── model.pkl
+├── scaler.pkl
+├── label_encoder.pkl
+├── feature_names.pkl
+│
+├── data_preprocessing.py
+├── feature_engineering.py
+├── smote_pipeline.py
+├── hyperparameter_tuning.py
+├── shap_analysis.py
+│
+├── X_train.pkl
+├── X_test.pkl
+│
+└── README.md
