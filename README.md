@@ -46,6 +46,13 @@ The project follows a complete machine learning pipeline, including data preproc
 - Torque (Nm)
 - Tool Wear (Minutes)
 - Product Type (L / M / H)
+- TWF
+- HDF
+- OSF
+- PWF
+- RNF
+- UDI
+- Product ID
 
 ### Target
 
